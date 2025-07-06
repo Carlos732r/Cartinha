@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carta de Amor</title>
+
+  <!-- Fonte Sofia -->
+  <link href="https://fonts.googleapis.com/css2?family=Sofia&display=swap" rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    /* Variáveis (substituição de SASS) */
+    :root {
+      --bg: #000;
+      --tab-bg: #f9f9f9;
+      --f-color: #ba9872;
+      --s-color: #967b5c;
+      --fo-color: #f9f9f9;
+      --fi-color: #e2e2e2;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      background-color: var(--bg);
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: url("https://i.postimg.cc/GtLCdKxR/sisors.png"), pointer;
+    }
+
+    /* Envelop */
+    .envelop {
+      width: 15rem;
+      height: 10rem;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    @media (min-width: 400px) and (max-width: 600px) {
+      .envelop {
+        width: 20rem;
+        height: 15rem;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .envelop {
+        width: 25rem;
+        height: 20rem;
+      }
+    }
+
+    @media (min-width: 600px) and (min-height: 600px) {
+      .envelop {
+        bottom: 20%;
+      }
+    }
+
+    .envelop__front-paper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      left: 0;
+      border-radius: 0.7rem;
+      border: 0.35rem solid var(--s-color);
+      background-color: var(--f-color);
+      clip-path: polygon(100% 0%, 50% 70%, 0% 0%, 0% 100%, 100% 100%);
+      z-index: 300;
+    }
+
+    .envelop__back-paper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      left: 0;
+      border-radius: 0.7rem;
+      background-color: var(--s-color);
+      clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 90%);
+      z-index: 100;
+    }
+
+    .envelop__up-paper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.7rem;
+      background-color: var(--s-color);
+      clip-path: polygon(0% 0%, 100% 0%, 50% 81%);
+      z-index: 400;
+      cursor: url("https://i.postimg.cc/GtLCdKxR/sisors.png"), pointer;
+    }
+
+    .envelop__sticker {
+      width: 100%;
+      height: 20%;
+      position: absolute;
+      margin: auto;
+      top: 30%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 400;
+      background-image: url("https://www.freepnglogos.com/uploads/heart-png/emoji-heart-33.png");
+      background-color: var(--fo-color);
+      border: 0.3rem solid var(--fi-color);
+      background-size: 2rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+
+    @media (max-width: 400px) {
+      .envelop__sticker {
+        background-size: 1.2rem;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .envelop__sticker {
+        height: 15%;
+      }
+    }
+
+    .envelop__false-sticker {
+      width: 20%;
+      height: 20%;
+      position: absolute;
+      margin: auto;
+      top: 30%;
+      left: 80%;
+      right: 0;
+      bottom: 0;
+      z-index: 300;
+      background-image: url("https://www.freepnglogos.com/uploads/heart-png/emoji-heart-33.png");
+      background-color: var(--fo-color);
+      border: 0.3rem solid var(--fi-color);
+      background-size: 2rem;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    @media (max-width: 400px) {
+      .envelop__false-sticker {
+        background-size: 1.2rem;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .envelop__false-sticker {
+        height: 15%;
+      }
+    }
+
+    .envelop__content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      left: 0;
+      z-index: 200;
+    }
+
+    .love-notes {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .note {
+      width: 95%;
+      height: 30%;
+      background-color: var(--tab-bg);
+      position: absolute;
+      overflow: hidden;
+      transition: height 0.5s, opacity 0.25s;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.75);
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    .note:nth-child(1) {
+      bottom: 60%;
+    }
+
+    .note:nth-child(2) {
+      bottom: 40%;
+    }
+
+    .note:nth-child(3) {
+      bottom: 20%;
+    }
+
+    .note:hover {
+      cursor: pointer;
+    }
+
+    .note__text {
+      font-family: 'Sofia', cursive;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .note__text p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    @media (min-width: 300px) and (max-width: 600px) {
+      .note__text p {
+        font-size: 1.025rem;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .note__text p {
+        font-size: 1.15rem;
+      }
+    }
+
+    .scissors:active {
+      cursor: url("https://i.postimg.cc/GtXQ7WPZ/pngwing-com.png"), pointer;
+    }
+
+    .cursor {
+      cursor: pointer;
+    }
+
+    /* Imagem na última nota */
+    .note__image {
+      width: 100%;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .note__image img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      transition: all 0.5s ease;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Animação SVG na segunda nota */
+    .note__animation {
+      width: 100%;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .note__animation svg {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+    }
+
+    svg #line {
+      fill: none;
+      stroke: #e00000;
+      stroke-width: 1.5;
+      stroke-linecap: butt;
+      stroke-linejoin: round;
+      stroke-miterlimit: 4;
+      stroke-opacity: 1;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: dash 3s linear infinite;
+    }
+
+    svg #point {
+      fill: none;
+      stroke: #f00000;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: .1;
+      stroke-opacity: 1;
+      stroke-dasharray: .0001, .9999;
+      stroke-dashoffset: 1;
+      animation: dash 3s linear infinite;
+    }
+
+    @keyframes dash {
+      0% {
+        stroke-dashoffset: 1;
+      }
+      80% {
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
+</head>
+<body class="scissors">
+  <div class="envelop">
+    <div class="envelop__front-paper"></div>
+    <div class="envelop__back-paper"></div>
+    <div class="envelop__up-paper js-up-paper"></div>
+    <div class="envelop__sticker js-sticker"></div>
+    <div class="envelop__false-sticker"></div>
+    <div class="envelop__content js-envelop-content">
+      <div class="love-notes">
+        <div class="note js-note">
+          <div class="note__text">
+            <p>Oii minha coisa gotosa do mo, desculpa por a gente não estar diretamente juntos, mas saiba que sempre que você precisar eu estarei com você.</p>
+          </div>
+        </div>
+        <div class="note js-note">
+          <div class="note__text">
+            <p>O futuro está nos reservando coisas incrivéis para acontecer, basta que temos muito paciência que tudo dará certo meu amor.</p>
+            <div class="note__animation">
+              <svg xmlns="http://www.w3.org/2000/svg" id="svg5" version="1.1" viewBox="-5 -5 278 56">
+                <filter id="blur">
+                  <feGaussianBlur stdDeviation="1.6" />
+                </filter>
+                <g id="layer1" transform="translate(29.1 -127.42)">
+                  <path id="line" d="M-28.73 167.2c26.43 9.21 68.46-9.46 85.45-12.03 18.45-2.78 32.82 4.86 28.75 9.83-3.82 4.66-25.77-21.18-14.81-31.5 9.54-8.98 17.64 10.64 16.42 17.06-1.51-6.2 2.95-26.6 14.74-22.11 11.7 4.46-4.33 49.03-15.44 44.08-6.97-3.1 15.44-16.26 26.1-16 23.03.56 55.6 27.51 126.63 3.36" pathLength="1" />
+                </g>
+                <g id="layer2" transform="translate(29.1 -127.42)">
+                  <path filter="url(#blur)" id="point" d="M-28.73 167.2c26.43 9.21 68.46-9.46 85.45-12.03 18.45-2.78 32.82 4.86 28.75 9.83-3.82 4.66-25.77-21.18-14.81-31.5 9.54-8.98 17.64 10.64 16.42 17.06-1.51-6.2 2.95-26.6 14.74-22.11 11.7 4.46-4.33 49.03-15.44 44.08-6.97-3.1 15.44-16.26 26.1-16 23.03.56 55.6 27.51 126.63 3.36" pathLength="1" />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="note js-note">
+          <div class="note__text">
+            <p>Você é a melhor coisa que me aconteceu e por isso não te quero longe quero você o mais perto de mim rapidamente.</p>
+            <p>Te amo muito! &hearts;</p>
+            <div class="note__image">
+              <img src="foto.jpeg" alt="Nossa foto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const mobile_media_query = window.matchMedia("(max-width: 400px)");
+    const tablet_media_query = window.matchMedia("(min-width: 400px) and (max-width: 600px)");
+    const notes = document.querySelectorAll(".js-note");
+    const upPaper = document.querySelector(".js-up-paper");
+    const sticker = document.querySelector(".js-sticker");
+    const body = document.body;
+
+    function resize_notes() {
+      notes.forEach(note => {
+        if (note.classList.contains("active")) {
+          note.classList.remove("active");
+          gsap.set(note, { height: "30%", clearProps: "all" });
+        }
+      });
+    }
+
+    function notes_ready() {
+      gsap.to(".js-envelop-content", { height: "110%", duration: 0.5 });
+      notes.forEach((note, i) => {
+        note.addEventListener("click", function () {
+          if (this.classList.contains("active")) {
+            this.classList.remove("active");
+            gsap.set(this, { height: "30%", clearProps: "all" });
+          } else {
+            notes.forEach(n => {
+              n.classList.remove("active");
+              gsap.set(n, { height: "30%", clearProps: "all" });
+            });
+            this.classList.add("active");
+
+            let height;
+            if (mobile_media_query.matches) {
+              height = 125 + 40 * i + "%";
+            } else if (tablet_media_query.matches) {
+              height = 80 + 21 * i + "%";
+            } else {
+              height = 70 + 20 * i + "%";
+            }
+            gsap.set(this, { height });
+          }
+        });
+      });
+    }
+
+    function set_up_paper() {
+      gsap.set(".js-up-paper", {
+        bottom: "97%",
+        rotation: 180,
+        zIndex: 200,
+        clipPath: "polygon(0% 0%, 100% 0%, 50% 61%)",
+        onComplete: notes_ready
+      });
+      // Mantém cursor tesoura na faixa branca e no body
+      upPaper.style.cursor = 'url("https://i.postimg.cc/GtLCdKxR/sisors.png"), pointer';
+      body.classList.add("scissors");
+    }
+
+    function envelop_transition() {
+      gsap.to(".js-up-paper", {
+        bottom: "1%",
+        duration: 0.25,
+        onComplete: set_up_paper
+      });
+      upPaper.removeEventListener("click", envelop_transition);
+      upPaper.classList.remove("cursor");
+      upPaper.style.cursor = "default";
+      body.classList.remove("scissors");
+    }
+
+    function open_envelope() {
+      sticker.removeEventListener("click", open_envelope);
+      upPaper.removeEventListener("click", open_envelope);
+
+      gsap.set(".js-sticker", { width: "20%", left: "-80%" });
+      body.classList.remove("scissors");
+
+      // Agora o fechamento fica no clique da aba superior
+      upPaper.addEventListener("click", envelop_transition);
+      upPaper.classList.add("cursor");
+      upPaper.style.cursor = "pointer";
+
+      envelop_transition();
+    }
+
+    sticker.addEventListener("click", open_envelope);
+    upPaper.addEventListener("click", open_envelope);
+    window.addEventListener("resize", resize_notes);
+  </script>
+</body>
+</html>
+
+
