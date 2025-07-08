@@ -244,22 +244,55 @@
       cursor: pointer;
     }
 
-    /* Imagem na última nota */
+    /* Imagem na última nota - AJUSTADA */
     .note__image {
       width: 100%;
       margin-top: 10px;
       text-align: center;
+      padding: 0 5px;
     }
 
     .note__image img {
-      width: 100%;
-      max-width: 200px;
+      width: 98%;
+      max-width: none;
       height: auto;
-      object-fit: contain;
-      border-radius: 10px;
+      object-fit: cover;
+      border-radius: 8px;
       transition: all 0.5s ease;
       display: block;
       margin: 0 auto;
+    }
+
+    /* Ajustes específicos para mobile */
+    @media (max-width: 400px) {
+      .note__image {
+        padding: 0 3px;
+      }
+      
+      .note__image img {
+        width: 99%;
+        max-height: 120px;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+    }
+
+    /* Ajustes para tablet */
+    @media (min-width: 400px) and (max-width: 600px) {
+      .note__image img {
+        width: 97%;
+        max-height: 180px;
+        object-fit: cover;
+      }
+    }
+
+    /* Ajustes para desktop */
+    @media (min-width: 600px) {
+      .note__image img {
+        width: 96%;
+        max-height: 200px;
+        object-fit: cover;
+      }
     }
 
     /* Animação SVG na segunda nota */
